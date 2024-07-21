@@ -1,0 +1,35 @@
+def convert_to_lowest_terms(first_num, second_num):
+    if first_num > second_num:
+        low_value = second_num
+        high_value = first_num
+    else:
+        high_value = second_num
+        low_value = first_num
+
+    for i in range(low_value, 0, -1):
+        if low_value % i == 0 and high_value % i == 0:
+            first_num //= i
+            second_num //= i
+            break
+
+    return first_num, second_num
+
+class Bag:
+    def __init__(self, wb, bb):
+        self.white_balls = wb
+        self.black_balls = bb
+        self.poss = wb + bb
+
+X = Bag(5, 4)
+Y = Bag(7, 6)
+
+tot_poss = X.poss * (Y.poss + 1)
+draw_first_black_top = X.black_balls * (Y.black_balls + 1)
+draw_first_white_top = X.white_balls * Y.black_balls
+
+top = draw_first_black_top + draw_first_white_top
+bottom = tot_poss
+
+top, bottom = convert_to_lowest_terms(top, bottom)
+
+print(f"{top}/{bottom}")
