@@ -1,0 +1,25 @@
+import sys
+
+def printTransactions(m, k, d, names, owned, prices):
+    transactions = []
+    for i in range(k):
+        short_term_sma = sum(prices[i][3:5]) / 2
+        long_term_sma = sum(prices[i]) / 5
+        if prices[i][4] < short_term_sma and prices[i][4] < long_term_sma:
+            max_buy = int(m // prices[i][4])
+            if max_buy > 0:
+                transactions.append((names[i], "BUY", max_buy))
+                m -= max_buy * prices[i][4]
+        if owned[i] > 0 and prices[i][4] > short_term_sma and prices[i][4] > long_term_sma:
+            transactions.append((names[i], "SELL", owned[i]))
+    print(len(transactions))
+    for transaction in transactions:
+        print(transaction[0], transaction[1], transaction[2])
+
+m = 90.00
+k = 2
+d = 400
+names = ["iStreet", "HR"]
+owned = [10, 0]
+prices = [[4.54, 5.53, 6.56, 5.54, 7.60], [30.54, 27.53, 24.42, 20.11, 17.50]]
+printTransactions(m, k, d, names, owned, prices)
